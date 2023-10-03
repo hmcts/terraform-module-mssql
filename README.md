@@ -45,15 +45,17 @@ module "common_tags" {
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >= 2.41.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.7.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | n/a |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | >= 2.41.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | >= 3.7.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.0 |
 
 ## Resources
 
@@ -94,6 +96,8 @@ module "common_tags" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_mssql_admin_password"></a> [mssql\_admin\_password](#output\_mssql\_admin\_password) | n/a |
+| <a name="output_mssql_admin_username"></a> [mssql\_admin\_username](#output\_mssql\_admin\_username) | n/a |
 | <a name="output_mssql_database_ids"></a> [mssql\_database\_ids](#output\_mssql\_database\_ids) | n/a |
 | <a name="output_mssql_server_id"></a> [mssql\_server\_id](#output\_mssql\_server\_id) | n/a |
 | <a name="output_mssql_server_name"></a> [mssql\_server\_name](#output\_mssql\_server\_name) | n/a |
