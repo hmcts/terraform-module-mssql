@@ -7,7 +7,7 @@ output "mssql_server_name" {
 }
 
 output "mssql_database_ids" {
-  value = azurerm_mssql_database.this.*.id
+  value = { for key, value in var.mssql_databases : key => azurerm_mssql_database.this[key].id }
 }
 
 output "mssql_admin_username" {
