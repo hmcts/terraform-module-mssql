@@ -14,7 +14,7 @@ resource "azurerm_mssql_server" "this" {
   location                      = local.resource_group_location
   version                       = var.mssql_version
   administrator_login           = var.mssql_admin_username
-  administrator_login_password  = random_password.mssql_password[0].result
+  administrator_login_password  = local.admin_password
   minimum_tls_version           = var.minimum_tls_version
   public_network_access_enabled = var.public_network_access_enabled
 

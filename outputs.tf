@@ -15,5 +15,5 @@ output "mssql_admin_username" {
 }
 
 output "mssql_admin_password" {
-  value = random_password.mssql_password[0].result
+  value = local.admin_password
 }
