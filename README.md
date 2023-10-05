@@ -6,7 +6,7 @@ Terraform module for [Azure SQL Server](https://azure.microsoft.com/en-gb/produc
 
 ```hcl
 module "mssql" {
-  source = "../"
+  source = "github.com/hmcts/terraform-module-mssql?ref=main"
   env    = var.env
 
   product   = "platops"
