@@ -96,6 +96,7 @@ module "common_tags" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_fqdn"></a> [fqdn](#output\_fqdn) | n/a |
 | <a name="output_mssql_admin_password"></a> [mssql\_admin\_password](#output\_mssql\_admin\_password) | n/a |
 | <a name="output_mssql_admin_username"></a> [mssql\_admin\_username](#output\_mssql\_admin\_username) | n/a |
 | <a name="output_mssql_database_ids"></a> [mssql\_database\_ids](#output\_mssql\_database\_ids) | n/a |
