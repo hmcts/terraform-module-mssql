@@ -74,6 +74,7 @@ module "common_tags" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_admin_group"></a> [admin\_group](#input\_admin\_group) | The name of the Azure AD group that will be granted admin access to the MSSQL server. | `string` | `null` | no |
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Common tag to be applied to resources | `map(string)` | n/a | yes |
 | <a name="input_component"></a> [component](#input\_component) | https://hmcts.github.io/glossary/#component | `string` | n/a | yes |
 | <a name="input_enable_private_endpoint"></a> [enable\_private\_endpoint](#input\_enable\_private\_endpoint) | Whether to deploy a private endpoint for the MSSQL server. This allows for a terraform plan in a 'clean' environment. | `bool` | `false` | no |
@@ -96,6 +97,7 @@ module "common_tags" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_fqdn"></a> [fqdn](#output\_fqdn) | n/a |
 | <a name="output_mssql_admin_password"></a> [mssql\_admin\_password](#output\_mssql\_admin\_password) | n/a |
 | <a name="output_mssql_admin_username"></a> [mssql\_admin\_username](#output\_mssql\_admin\_username) | n/a |
 | <a name="output_mssql_database_ids"></a> [mssql\_database\_ids](#output\_mssql\_database\_ids) | n/a |

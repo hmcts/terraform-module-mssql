@@ -86,3 +86,9 @@ variable "private_endpoint_subnet_id" {
   type        = string
   default     = null
 }
+
+variable "admin_group" {
+  description = "The name of the Azure AD group that will be granted admin access to the MSSQL server."
+  type        = string
+  default     = null
+}
