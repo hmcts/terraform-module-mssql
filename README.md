@@ -4,6 +4,8 @@ Terraform module for [Azure SQL Server](https://azure.microsoft.com/en-gb/produc
 
 ## Example
 
+### Basic SKU Example
+
 ```hcl
 module "mssql" {
   source = "github.com/hmcts/terraform-module-mssql?ref=main"
@@ -15,15 +17,14 @@ module "mssql" {
   common_tags = module.common_tags.common_tags
   mssql_databases = {
     example = {
-      collation                   = "SQL_Latin1_General_CP1_CI_AS"
-      license_type                = "LicenseIncluded"
-      max_size_gb                 = 2
-      sku_name                    = "Basic"
-      zone_redundant              = false
-      create_mode                 = "Default"
-      min_capacity                = 0
-      geo_backup_enabled          = false
-      auto_pause_delay_in_minutes = -1
+      collation          = "SQL_Latin1_General_CP1_CI_AS"
+      license_type       = "LicenseIncluded"
+      max_size_gb        = 2
+      sku_name           = "Basic"
+      zone_redundant     = false
+      create_mode        = "Default"
+      compute_model      = "Provisioned"  # Default value, can be omitted
+      geo_backup_enabled = false
     }
   }
   mssql_version = "12.0"
@@ -39,6 +40,41 @@ module "common_tags" {
   product     = "sds-platform"
 }
 ```
+
+### Serverless SKU Example
+
+```hcl
+module "mssql_serverless" {
+  source = "github.com/hmcts/terraform-module-mssql?ref=main"
+  env    = var.env
+
+  product   = "platops"
+  component = "example"
+
+  common_tags = module.common_tags.common_tags
+  mssql_databases = {
+    example_serverless = {
+      collation                   = "SQL_Latin1_General_CP1_CI_AS"
+      license_type                = "LicenseIncluded"
+      max_size_gb                 = 2
+      sku_name                    = "GP_S_Gen5_2"  # Serverless SKU
+      zone_redundant              = false
+      create_mode                 = "Default"
+      compute_model               = "Serverless"   # Required for Serverless features
+      min_capacity                = 0.5
+      geo_backup_enabled          = false
+      auto_pause_delay_in_minutes = 60
+    }
+  }
+  mssql_version = "12.0"
+}
+```
+
+**Important Notes:**
+- The `compute_model` attribute accepts either `"Provisioned"` (default) or `"Serverless"`
+- The `auto_pause_delay_in_minutes` attribute is **only applied** when `compute_model = "Serverless"`
+- For Provisioned databases (Basic, Standard, Premium SKUs), set `compute_model = "Provisioned"` or omit it
+- For Serverless databases (GP_S_* SKUs), set `compute_model = "Serverless"` to enable auto-pause functionality
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -85,7 +121,7 @@ module "common_tags" {
 | <a name="input_minimum_tls_version"></a> [minimum\_tls\_version](#input\_minimum\_tls\_version) | The minimum TLS version. | `string` | `"1.2"` | no |
 | <a name="input_mssql_admin_password"></a> [mssql\_admin\_password](#input\_mssql\_admin\_password) | The password of the admin account, if a value is not provided one will be generated. | `string` | `null` | no |
 | <a name="input_mssql_admin_username"></a> [mssql\_admin\_username](#input\_mssql\_admin\_username) | The username of the admin account, default is 'sqladmin'. | `string` | `"sqladmin"` | no |
-| <a name="input_mssql_databases"></a> [mssql\_databases](#input\_mssql\_databases) | Map of objects representing the databases to create on the MSSQL server. | <pre>map(object({<br>    collation                   = optional(string)<br>    license_type                = optional(string, "LicenseIncluded")<br>    max_size_gb                 = optional(number, 1)<br>    sku_name                    = optional(string, "Basic")<br>    zone_redundant              = optional(bool, false)<br>    create_mode                 = optional(string, "Default")<br>    min_capacity                = optional(number)<br>    geo_backup_enabled          = optional(bool, false)<br>    auto_pause_delay_in_minutes = optional(number, -1)<br>  }))</pre> | `{}` | no |
+| <a name="input_mssql_databases"></a> [mssql\_databases](#input\_mssql\_databases) | Map of objects representing the databases to create on the MSSQL server. | <pre>map(object({<br/>    collation                   = optional(string)<br/>    license_type                = optional(string, "LicenseIncluded")<br/>    max_size_gb                 = optional(number, 1)<br/>    sku_name                    = optional(string, "Basic")<br/>    zone_redundant              = optional(bool, false)<br/>    create_mode                 = optional(string, "Default")<br/>    compute_model               = optional(string, "Provisioned")<br/>    min_capacity                = optional(number)<br/>    geo_backup_enabled          = optional(bool, false)<br/>    auto_pause_delay_in_minutes = optional(number, -1)<br/>  }))</pre> | `{}` | no |
 | <a name="input_mssql_version"></a> [mssql\_version](#input\_mssql\_version) | The version of MSSQL to use. | `string` | `"12.0"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The default name will be product+component+env, you can override the product+component part by setting this | `string` | `null` | no |
 | <a name="input_private_endpoint_subnet_id"></a> [private\_endpoint\_subnet\_id](#input\_private\_endpoint\_subnet\_id) | The subnet ID to deploy the private endpoint into. | `string` | `null` | no |
@@ -119,3 +155,4 @@ If you add a new hook make sure to run it against all files:
 ```shell
 $ pre-commit run --all-files
 ```
+
