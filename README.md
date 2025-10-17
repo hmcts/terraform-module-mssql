@@ -4,7 +4,7 @@ Terraform module for [Azure SQL Server](https://azure.microsoft.com/en-gb/produc
 
 ## Example
 
-### Basic SKU Example
+### Provisioned SKU Example (Default)
 
 ```hcl
 module "mssql" {
@@ -23,6 +23,7 @@ module "mssql" {
       sku_name           = "Basic"
       zone_redundant     = false
       create_mode        = "Default"
+      compute_model      = "Provisioned"  # Default value, can be omitted
       geo_backup_enabled = false
     }
   }
@@ -59,16 +60,21 @@ module "mssql_serverless" {
       sku_name                    = "GP_S_Gen5_2"  # Serverless SKU
       zone_redundant              = false
       create_mode                 = "Default"
-      min_capacity                = 0.5  # Minimum vCores for Serverless SKU
+      compute_model               = "Serverless"   # Required for Serverless features
+      min_capacity                = 0.5
       geo_backup_enabled          = false
-      auto_pause_delay_in_minutes = 60  # Only valid for Serverless SKUs (GP_S_*)
+      auto_pause_delay_in_minutes = 60
     }
   }
   mssql_version = "12.0"
 }
 ```
 
-**Note:** The `auto_pause_delay_in_minutes` attribute is only applicable for Serverless SKUs (SKU names starting with `GP_S_`). For non-Serverless SKUs (Basic, Standard, Premium, etc.), this attribute should be omitted or will be ignored.
+**Important Notes:**
+- The `compute_model` attribute accepts either `"Provisioned"` (default) or `"Serverless"`
+- The `auto_pause_delay_in_minutes` attribute is **only applied** when `compute_model = "Serverless"`
+- For Provisioned databases (Basic, Standard, Premium SKUs), set `compute_model = "Provisioned"` or omit it
+- For Serverless databases (GP_S_* SKUs), set `compute_model = "Serverless"` to enable auto-pause functionality
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -112,11 +118,10 @@ module "mssql_serverless" {
 | <a name="input_env"></a> [env](#input\_env) | Environment value | `string` | n/a | yes |
 | <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | Name of existing resource group to deploy resources into | `string` | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy the resource | `string` | `"UK South"` | no |
-| <a name="input_min_capacity"></a> [min\_capacity](#input\_min\_capacity) | Minimum vCores for Serverless SKU | `number` | `1` | no |
 | <a name="input_minimum_tls_version"></a> [minimum\_tls\_version](#input\_minimum\_tls\_version) | The minimum TLS version. | `string` | `"1.2"` | no |
 | <a name="input_mssql_admin_password"></a> [mssql\_admin\_password](#input\_mssql\_admin\_password) | The password of the admin account, if a value is not provided one will be generated. | `string` | `null` | no |
 | <a name="input_mssql_admin_username"></a> [mssql\_admin\_username](#input\_mssql\_admin\_username) | The username of the admin account, default is 'sqladmin'. | `string` | `"sqladmin"` | no |
-| <a name="input_mssql_databases"></a> [mssql\_databases](#input\_mssql\_databases) | Map of objects representing the databases to create on the MSSQL server. | <pre>map(object({<br/>    collation                   = optional(string)<br/>    license_type                = optional(string, "LicenseIncluded")<br/>    max_size_gb                 = optional(number, 1)<br/>    sku_name                    = optional(string, "Basic")<br/>    zone_redundant              = optional(bool, false)<br/>    create_mode                 = optional(string, "Default")<br/>    min_capacity                = optional(number)<br/>    geo_backup_enabled          = optional(bool, false)<br/>    auto_pause_delay_in_minutes = optional(number, -1)<br/>  }))</pre> | `{}` | no |
+| <a name="input_mssql_databases"></a> [mssql\_databases](#input\_mssql\_databases) | Map of objects representing the databases to create on the MSSQL server. | <pre>map(object({<br>    collation                   = optional(string)<br>    license_type                = optional(string, "LicenseIncluded")<br>    max_size_gb                 = optional(number, 1)<br>    sku_name                    = optional(string, "Basic")<br>    zone_redundant              = optional(bool, false)<br>    create_mode                 = optional(string, "Default")<br>    compute_model               = optional(string, "Provisioned")<br>    min_capacity                = optional(number)<br>    geo_backup_enabled          = optional(bool, false)<br>    auto_pause_delay_in_minutes = optional(number, -1)<br>  }))</pre> | `{}` | no |
 | <a name="input_mssql_version"></a> [mssql\_version](#input\_mssql\_version) | The version of MSSQL to use. | `string` | `"12.0"` | no |
 | <a name="input_name"></a> [name](#input\_name) | The default name will be product+component+env, you can override the product+component part by setting this | `string` | `null` | no |
 | <a name="input_private_endpoint_subnet_id"></a> [private\_endpoint\_subnet\_id](#input\_private\_endpoint\_subnet\_id) | The subnet ID to deploy the private endpoint into. | `string` | `null` | no |

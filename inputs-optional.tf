@@ -68,11 +68,20 @@ variable "mssql_databases" {
     sku_name                    = optional(string, "Basic")
     zone_redundant              = optional(bool, false)
     create_mode                 = optional(string, "Default")
+    compute_model               = optional(string, "Provisioned")
     min_capacity                = optional(number)
     geo_backup_enabled          = optional(bool, false)
     auto_pause_delay_in_minutes = optional(number, -1)
   }))
   default = {}
+
+  validation {
+    condition = alltrue([
+      for db_key, db in var.mssql_databases :
+      contains(["Provisioned", "Serverless"], db.compute_model)
+    ])
+    error_message = "compute_model must be either 'Provisioned' or 'Serverless'."
+  }
 }
 
 variable "enable_private_endpoint" {
@@ -93,8 +102,3 @@ variable "admin_group" {
   default     = null
 }
 
-variable "min_capacity" {
-  description = "Minimum vCores for Serverless SKU"
-  type        = number
-  default     = 0.5
-}
