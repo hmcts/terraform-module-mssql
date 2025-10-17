@@ -4,7 +4,7 @@ Terraform module for [Azure SQL Server](https://azure.microsoft.com/en-gb/produc
 
 ## Example
 
-### Provisioned SKU Example (Default)
+### Basic SKU Example
 
 ```hcl
 module "mssql" {
