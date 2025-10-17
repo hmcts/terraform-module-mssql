@@ -14,9 +14,7 @@ module "mssql" {
       sku_name                    = "Basic"
       zone_redundant              = false
       create_mode                 = "Default"
-      min_capacity                = 0
       geo_backup_enabled          = false
-      auto_pause_delay_in_minutes = -1
     }
   }
   mssql_version = "12.0"

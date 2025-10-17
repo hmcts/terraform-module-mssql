@@ -96,5 +96,5 @@ variable "admin_group" {
 variable "min_capacity" {
   description = "Minimum vCores for Serverless SKU"
   type        = number
-  default     = 1
+  default     = 0.5
 }
