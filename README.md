@@ -112,7 +112,7 @@ module "mssql_serverless" {
 | <a name="input_env"></a> [env](#input\_env) | Environment value | `string` | n/a | yes |
 | <a name="input_existing_resource_group_name"></a> [existing\_resource\_group\_name](#input\_existing\_resource\_group\_name) | Name of existing resource group to deploy resources into | `string` | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | Target Azure location to deploy the resource | `string` | `"UK South"` | no |
-| <a name="input_min_capacity"></a> [min\_capacity](#input\_min\_capacity) | Minimum vCores for Serverless SKU | `number` | `1` | no |
+| <a name="input_min_capacity"></a> [min\_capacity](#input\_min\_capacity) | Minimum vCores for Serverless SKU | `number` | `0.5` | no |
 | <a name="input_minimum_tls_version"></a> [minimum\_tls\_version](#input\_minimum\_tls\_version) | The minimum TLS version. | `string` | `"1.2"` | no |
 | <a name="input_mssql_admin_password"></a> [mssql\_admin\_password](#input\_mssql\_admin\_password) | The password of the admin account, if a value is not provided one will be generated. | `string` | `null` | no |
 | <a name="input_mssql_admin_username"></a> [mssql\_admin\_username](#input\_mssql\_admin\_username) | The username of the admin account, default is 'sqladmin'. | `string` | `"sqladmin"` | no |
