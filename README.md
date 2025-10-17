@@ -59,7 +59,7 @@ module "mssql_serverless" {
       sku_name                    = "GP_S_Gen5_2"  # Serverless SKU
       zone_redundant              = false
       create_mode                 = "Default"
-      min_capacity                = 0.5
+      min_capacity                = 1  # Minimum vCores for Serverless SKU
       geo_backup_enabled          = false
       auto_pause_delay_in_minutes = 60  # Only valid for Serverless SKUs (GP_S_*)
     }
