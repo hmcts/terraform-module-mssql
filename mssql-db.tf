@@ -10,6 +10,7 @@ resource "azurerm_mssql_database" "this" {
   create_mode                 = each.value.create_mode
   min_capacity                = each.value.min_capacity
   geo_backup_enabled          = each.value.geo_backup_enabled
-  auto_pause_delay_in_minutes = each.value.auto_pause_delay_in_minutes
+  auto_pause_delay_in_minutes = startswith(each.value.sku_name, "GP_S_") ? each.value.auto_pause_delay_in_minutes : null
   tags                        = var.common_tags
 }
+

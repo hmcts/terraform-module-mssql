@@ -4,6 +4,8 @@ Terraform module for [Azure SQL Server](https://azure.microsoft.com/en-gb/produc
 
 ## Example
 
+### Basic SKU Example
+
 ```hcl
 module "mssql" {
   source = "github.com/hmcts/terraform-module-mssql?ref=main"
@@ -15,15 +17,13 @@ module "mssql" {
   common_tags = module.common_tags.common_tags
   mssql_databases = {
     example = {
-      collation                   = "SQL_Latin1_General_CP1_CI_AS"
-      license_type                = "LicenseIncluded"
-      max_size_gb                 = 2
-      sku_name                    = "Basic"
-      zone_redundant              = false
-      create_mode                 = "Default"
-      min_capacity                = 0
-      geo_backup_enabled          = false
-      auto_pause_delay_in_minutes = -1
+      collation          = "SQL_Latin1_General_CP1_CI_AS"
+      license_type       = "LicenseIncluded"
+      max_size_gb        = 2
+      sku_name           = "Basic"
+      zone_redundant     = false
+      create_mode        = "Default"
+      geo_backup_enabled = false
     }
   }
   mssql_version = "12.0"
@@ -39,6 +39,36 @@ module "common_tags" {
   product     = "sds-platform"
 }
 ```
+
+### Serverless SKU Example
+
+```hcl
+module "mssql_serverless" {
+  source = "github.com/hmcts/terraform-module-mssql?ref=main"
+  env    = var.env
+
+  product   = "platops"
+  component = "example"
+
+  common_tags = module.common_tags.common_tags
+  mssql_databases = {
+    example_serverless = {
+      collation                   = "SQL_Latin1_General_CP1_CI_AS"
+      license_type                = "LicenseIncluded"
+      max_size_gb                 = 2
+      sku_name                    = "GP_S_Gen5_2"  # Serverless SKU
+      zone_redundant              = false
+      create_mode                 = "Default"
+      min_capacity                = 0.5
+      geo_backup_enabled          = false
+      auto_pause_delay_in_minutes = 60  # Only valid for Serverless SKUs (GP_S_*)
+    }
+  }
+  mssql_version = "12.0"
+}
+```
+
+**Note:** The `auto_pause_delay_in_minutes` attribute is only applicable for Serverless SKUs (SKU names starting with `GP_S_`). For non-Serverless SKUs (Basic, Standard, Premium, etc.), this attribute should be omitted or will be ignored.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -119,3 +149,4 @@ If you add a new hook make sure to run it against all files:
 ```shell
 $ pre-commit run --all-files
 ```
+
