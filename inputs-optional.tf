@@ -72,6 +72,12 @@ variable "mssql_databases" {
     min_capacity                = optional(number)
     geo_backup_enabled          = optional(bool, false)
     auto_pause_delay_in_minutes = optional(number, -1)
+    long_term_retention_policy = optional(object({
+      weekly_retention  = optional(string, "PT0S")
+      monthly_retention = optional(string, "PT0S")
+      yearly_retention  = optional(string, "PT0S")
+      week_of_year      = optional(number, 1)
+    }))
   }))
   default = {}
 
