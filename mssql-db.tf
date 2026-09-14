@@ -12,5 +12,15 @@ resource "azurerm_mssql_database" "this" {
   geo_backup_enabled          = each.value.geo_backup_enabled
   auto_pause_delay_in_minutes = each.value.compute_model == "Serverless" ? each.value.auto_pause_delay_in_minutes : null
   tags                        = var.common_tags
+
+  dynamic "long_term_retention_policy" {
+    for_each = each.value.long_term_retention_policy != null ? [each.value.long_term_retention_policy] : []
+    content {
+      weekly_retention  = long_term_retention_policy.value.weekly_retention
+      monthly_retention = long_term_retention_policy.value.monthly_retention
+      yearly_retention  = long_term_retention_policy.value.yearly_retention
+      week_of_year      = long_term_retention_policy.value.week_of_year
+    }
+  }
 }
 
